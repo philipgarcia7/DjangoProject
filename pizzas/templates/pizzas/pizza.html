@@ -16,6 +16,18 @@
     {% endfor %}
 </ul>
 
-<p><a href="{% url 'pizzas:new_topping' pizza.id %}">Add new topping</a></p>
+<p><a href="{% url 'pizzas:comment' pizza.id %}">Add comment</a></p>
+
+<ul>
+    {% for c in comments %}
+    <li>
+        <p> {{ c.comment_text }}</p>
+        <p> {{ c.date_added }}</p>
+    </li>
+    {% empty %}
+    <li> There are no comments for this pizza. Please feel free to add one! </li>
+    {% endfor %}
+</ul>
+
 
 {% endblock content %}

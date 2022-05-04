@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from .forms import PizzaForm,ToppingForm
+from .forms import PizzaForm,ToppingForm,CommentForm
 from .models import Pizza, Topping
 
 
@@ -22,37 +22,27 @@ def pizzas(request):
 def pizza(request,pizza_id):
     pizza = Pizza.objects.get(id=pizza_id)
     toppings = pizza.topping_set.all()
+    comments = pizza.comment_set.order_by('-date_added')
 
-    context = {'pizza':pizza,'toppings':toppings}
+    context = {'pizza':pizza,'toppings':toppings,'comments':comments}
 
     return render(request, 'pizzas/pizza.html', context)
 
-def new_pizza(request):
-    if request.method != 'POST':
-        form = PizzaForm
-    else:
-        form = PizzaForm(data=request.POST)
 
-        if form.is_valid():
-            new_pizza = form.save()
 
-            return redirect('pizza:pizzas')
-    context = {'form':form}
-    return render(request, 'pizzas/new_pizza.html',context)
-
-def new_topping(request, pizza_id):
+def comment(request, pizza_id):
     pizza = Pizza.objects.get(id=pizza_id)
 
     if request.method != 'POST':
-        form = ToppingForm()
+        form = CommentForm()
     else:
-        form = ToppingForm(data=request.POST)
+        form = CommentForm(data=request.POST)
 
         if form.is_valid():
-            new_topping = form.save(commit=False)
-            new_topping.pizza = pizza
-            new_topping.save()
+            comment = form.save(commit=False)
+            comment.pizza = pizza
+            comment.save()
             return redirect('pizzas:pizza',pizza_id=pizza_id)
     
     context = {'form':form,'pizza':pizza}
-    return render(request, 'pizzas/new_topping.html',context)
+    return render(request, 'pizzas/comment.html',context)
