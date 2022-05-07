@@ -22,3 +22,4 @@ class CommentForm(forms.ModelForm):
         fields = ['comment_text']
         labels = {'comment_text':''}
         widgets = {'comment_text': forms.Textarea(attrs={'cols':80})}
+

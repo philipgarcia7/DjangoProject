@@ -5,7 +5,9 @@
 {% endblock page_header %}
 
 {% block content %}
-
+<p>
+    <img src="{{ pizza.image.url }}">
+</p>
 <ul>
     {% for t in toppings %}
     <div class="card mb-3">

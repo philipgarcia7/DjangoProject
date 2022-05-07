@@ -1,3 +1,4 @@
+from email.mime import image
 from django.shortcuts import render, redirect
 
 from .forms import PizzaForm,ToppingForm,CommentForm
@@ -23,8 +24,9 @@ def pizza(request,pizza_id):
     pizza = Pizza.objects.get(id=pizza_id)
     toppings = pizza.topping_set.all()
     comments = pizza.comment_set.order_by('-date_added')
+    image = Pizza.image
 
-    context = {'pizza':pizza,'toppings':toppings,'comments':comments}
+    context = {'pizza':pizza,'toppings':toppings,'comments':comments,'image':image}
 
     return render(request, 'pizzas/pizza.html', context)
 
